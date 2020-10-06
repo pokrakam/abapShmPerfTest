@@ -16,7 +16,8 @@ CLASS ltc_test DEFINITION FINAL FOR TESTING
     METHODS:
       regular_object   FOR TESTING,
       shm_read_access  FOR TESTING RAISING cx_static_check,
-      shm_write_access FOR TESTING RAISING cx_static_check.
+      shm_write_access FOR TESTING RAISING cx_static_check,
+      shm_attach_once FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 *--------------------------------------------------------------------*
@@ -62,6 +63,20 @@ CLASS ltc_test IMPLEMENTATION.
       DATA(flights) = flist->flight_list.
       handle->detach_commit( ).
     ENDDO.
+  ENDMETHOD.
+
+
+  METHOD shm_attach_once.
+    DATA flist TYPE REF TO cl_demo_flight_list.
+
+    handle = cl_demo_flights=>attach_for_update( ).
+    flist = handle->root.
+
+    DO many TIMES.
+      DATA(flights) = flist->flight_list.
+    ENDDO.
+
+    handle->detach_commit( ).
   ENDMETHOD.
 
 ENDCLASS.
