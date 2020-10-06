@@ -1,2 +1,2 @@
-# shmTest
-Shared Memory object test
+# abapShmPerfTest
+Shared Memory Objects performance test
